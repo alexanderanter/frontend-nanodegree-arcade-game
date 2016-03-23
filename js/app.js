@@ -25,10 +25,20 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    this.x += 100 * dt;
+    this.x += this.speed * dt;
 
     if(this.x > 500){
         this.x = -80;
+    }
+
+    if(this.x < player.x + 60 && this.x > player.x - 60){
+        if(this.y < player.y + 100 && this.y > player.y - 20) {
+            console.log("GOT YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!");
+            player.x = 200;
+            player.y = 420;
+        }
+    } else {
+        console.log("you are safe, for now...");
     }
 
 };
@@ -50,7 +60,11 @@ var Player = function(loc) {
 };
 
 Player.prototype.update = function(dt) {
-    console.log(this.x);
+    if(this.y <= 0){
+        console.log("you made it!");
+        this.x = 200;
+        this.y = 420;
+    }
 };
 
 Player.prototype.render = function() {
@@ -77,8 +91,9 @@ Player.prototype.handleInput = function(keys) {
 // Place the player object in a variable called player
 
 var allEnemies = [];
-new Enemy(50,5);
-new Enemy(90,5);
+new Enemy(50,140);
+new Enemy(90,400);
+new Enemy(120,240);
 
 var player = new Player(4);
 player.handleInput();
