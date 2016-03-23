@@ -3,6 +3,31 @@
 *version: 1.0.0
 */
 
+
+var genRandom  = function(maxValue, min) {
+    var minValue = 0 || min;
+    return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+};
+
+var genEnemies = function(enemies){
+    var i = 0;
+    for(i; i < enemies; i++) {
+        new Enemy(genRandom(200,50), genRandom(400,90));
+    }
+};
+
+var updateScore = function() {
+    this.score += 1;
+    var score = document.getElementById('score');
+    score.innerHTML = this.score;
+}
+
+var resetScore = function() {
+    var score = document.getElementById('score');
+    this.score = 0;
+    score.innerHTML = 0;
+}
+
 // Enemies our player must avoid
 var Enemy = function(y, speed) {
     // Variables applied to each of our instances go here,
@@ -29,13 +54,16 @@ Enemy.prototype.update = function(dt) {
 
     if(this.x > 500){
         this.x = -80;
+        this.y = (genRandom(200,50));
     }
 
     if(this.x < player.x + 60 && this.x > player.x - 60){
         if(this.y < player.y + 100 && this.y > player.y - 20) {
-            console.log("GOT YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!");
+
             player.x = 200;
             player.y = 420;
+            resetScore.call(player);
+
         }
     } else {
         console.log("you are safe, for now...");
@@ -52,18 +80,19 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(loc) {
-    this.loc = loc;
+var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 200;
     this.y = 420;
+    this.score = 0;
 };
 
-Player.prototype.update = function(dt) {
+Player.prototype.update = function() {
     if(this.y <= 0){
         console.log("you made it!");
         this.x = 200;
         this.y = 420;
+        updateScore.call(player);
     }
 };
 
@@ -91,11 +120,9 @@ Player.prototype.handleInput = function(keys) {
 // Place the player object in a variable called player
 
 var allEnemies = [];
-new Enemy(50,140);
-new Enemy(90,400);
-new Enemy(120,240);
-
 var player = new Player(4);
+
+genEnemies(6);
 player.handleInput();
 player.update(4);
 
