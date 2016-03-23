@@ -39,7 +39,7 @@ var Player = function(loc) {
     this.sprite = 'images/char-boy.png';
 };
 Player.prototype.update = function(dt) {
-    this.loc *= dt;
+    this.loc = this.loc * dt;
 };
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
